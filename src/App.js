@@ -1,24 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Movies from './components/Movies';
+import Header from './components/Header';
+
+
 
 function App() {
+
+  const [movies, setMovies] = useState([])
+
+  useEffect(()=> {
+    function getMovies(){
+      axios.get('https://raw.githubusercontent.com/vega/vega/main/docs/data/movies.json').then(({data}) =>{
+        const filteredData = data.filter((item) => item.Tilte !== null && item["Major Genre"] !== null);
+        setMovies(filteredData)
+      } );
+      
+    }
+    getMovies();
+
+  },[])
+
   return (
+    <>
+    <Header movies={movies} setMovies={setMovies}/>
+    <main>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Movies movies={movies}/>
     </div>
+    </main>
+    </>
+    
   );
 }
 
