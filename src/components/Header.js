@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import AddMovieModal from "./AddMovieModal";
 
 function Header({ movies, setMovies }) {
   const [name, setName] = useState("");
   const [genre, setGenre] = useState("");
+
+  const [openAddMovie, setOpenAddMovie] =useState(false);
 
   const handleNameChange = (e) => {
     e.preventDefault();
@@ -12,6 +15,10 @@ function Header({ movies, setMovies }) {
     e.preventDefault();
     setGenre(e.target.value.toLowerCase());
   };
+
+  const handleAddMovie = () => {
+    setOpenAddMovie(true);
+  }
 
   const filterMovies = () => {
     let filteredMovies = [];
@@ -38,7 +45,6 @@ function Header({ movies, setMovies }) {
       ];
     }
 
-    console.log("this", filteredMovies);
     if (filteredMovies.length > 0) {
       setMovies([...filteredMovies]);
     }
@@ -74,6 +80,10 @@ function Header({ movies, setMovies }) {
         ></input>
         <button onClick={filterMovies}>Search</button>
       </div>
+      <button class='add-movie'  onClick={handleAddMovie}>
+        <h3>Add Movie</h3>
+      </button>
+      {openAddMovie && <AddMovieModal modalIsOpen={openAddMovie} setIsOpen={setOpenAddMovie}/>}
     </header>
   );
 }
